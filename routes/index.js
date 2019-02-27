@@ -21,6 +21,7 @@ router.get('/light/', async(req, res, next)=>{
   res.send(await data.find({Last: 1}).toArray());
 });
 
+
 router.get('/sensor/', async(req, res, next)=>{
   const data = await loadCollection(car);
   res.send(await data.find({}).toArray()); 
@@ -39,16 +40,16 @@ router.post('/sensor/', async(req, res, next)=>{
   res.status(201).send(); 
 }); 
 
-router.post('/light/', async(req, res, next)=>{
+router.post('/lights/', async(req, res, next)=>{
   const data = await loadCollection(light);
-  await data.update({Id: parseInt(req.body.Id)},
+  await data.update({Id: parseInt(req.query.Id)},
   {$set: {Last:0}},
   {multi: true});
   await data.insertOne({
-    Id: parseInt(req.body.Id),
-    Y: parseInt(req.body.Y),
-    X: parseInt(req.body.X),
-    Intensity: parseInt(req.body.Intensity),
+    Id: parseInt(req.query.Id),
+    Y: parseInt(req.query.Y),
+    X: parseInt(req.query.X),
+    Intensity: parseInt(req.query.Intensity),
     Last: 1
   });
   res.status(201).send();
